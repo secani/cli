@@ -15,6 +15,8 @@ secani risks list --min-level high
 Or run it without installing: `npx secani login`. It needs Node.js 22.12 or
 newer and a Secani account.
 
+Documentation: [secani.com/docs/cli](https://secani.com/docs/cli).
+
 ## Logging in
 
 `secani login` prints a login page and a code and opens the page in your browser
