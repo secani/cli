@@ -82,6 +82,9 @@ export class Output {
     if (this.mode.json) return;
     this.clearProgress();
     this.io.stdout.write(text.endsWith("\n") ? text : `${text}\n`);
+    // On a terminal both streams share the screen: a next step after the
+    // answer starts a new phase, after one blank line.
+    this.stderrUsed = true;
   }
 
   /** The --json document. Pretty on a TTY, compact otherwise. */

@@ -172,6 +172,18 @@ describe("workspaces", () => {
     expect(list.stderr).toContain("No tasks in acme/privacy.");
   });
 
+  it("lists workspaces in one aligned table at 80 columns, with the next step after a blank line", async () => {
+    whoamiTool(world, ["prosec-group/prosec-networks", "bsi-muster-test/it-grundschutz-kundendienst"]);
+    await loggedIn(world);
+    const result = await run(world, ["workspaces", "list"], { tty: true, columns: 80 });
+    const lines = result.stdout.trimEnd().split("\n");
+    expect(lines[0]).toMatch(/^ {2}Workspace +Name +Access$/);
+    expect(lines).toHaveLength(3);
+    expect(result.stderr).toMatch(/^\n {2}Choose the workspace to work in:/);
+    const piped = await run(world, ["workspaces", "list"]);
+    expect(piped.stdout.split("\n")[0]).toBe("Workspace\tOrganization\tName\tAccess\tCurrent");
+  });
+
   it("refuses a workspace the account can't see", async () => {
     whoamiTool(world, ["acme/isms"]);
     await loggedIn(world);

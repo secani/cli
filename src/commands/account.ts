@@ -203,13 +203,22 @@ const workspacesList: CommandSpec = {
     out.answer(
       table(
         out.out,
-        [
-          { header: "Workspace", human: (item) => item.workspace },
-          { header: "Organization", human: (item) => item.organization.name, flex: true },
-          { header: "Name", human: (item) => item.name, flex: true },
-          { header: "Access", human: (item) => words(item.accessLevel), raw: (item) => item.accessLevel ?? "" },
-          { header: "Current", human: (item) => (item.current ? "Yes" : ""), raw: (item) => (item.current ? "true" : "false") },
-        ],
+        out.out.rich
+          ? [
+              // A terminal gets one name column, and Current only when one is set,
+              // so the ID column fits 80 columns beside them.
+              { header: "Workspace", human: (item) => item.workspace },
+              { header: "Name", human: (item) => `${item.organization.name} / ${item.name}`, flex: true },
+              { header: "Access", human: (item) => words(item.accessLevel) },
+              ...(items.some((item) => item.current) ? [{ header: "Current", human: (item: (typeof items)[number]) => (item.current ? "Yes" : "") }] : []),
+            ]
+          : [
+              { header: "Workspace", human: (item) => item.workspace },
+              { header: "Organization", human: (item) => item.organization.name },
+              { header: "Name", human: (item) => item.name },
+              { header: "Access", human: (item) => item.accessLevel ?? "" },
+              { header: "Current", human: (item) => (item.current ? "true" : "false") },
+            ],
         items,
       ),
     );
