@@ -1,6 +1,6 @@
 {
   "name": "secani",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Work with your Secani ISMS from the terminal: risks, tasks, findings, controls and incidents, for people, scripts and coding agents.",
   "keywords": [
     "secani",

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
+import manifest from "../package.json" with { type: "json" };
 import { ROOT } from "../src/commands/index";
 import { parseArgv } from "../src/runtime/args";
 import { allCommands } from "../src/runtime/help";
@@ -64,8 +65,8 @@ describe("help and parsing", () => {
   });
 
   it("prints the version, as JSON on request", async () => {
-    expect((await run(world, ["--version"])).stdout).toBe("0.1.0\n");
-    expect(JSON.parse((await run(world, ["tasks", "-v", "--json"])).stdout)).toEqual({ version: "0.1.0" });
+    expect((await run(world, ["--version"])).stdout).toBe(`${manifest.version}\n`);
+    expect(JSON.parse((await run(world, ["tasks", "-v", "--json"])).stdout)).toEqual({ version: manifest.version });
   });
 
   it("describes a command as JSON from the same metadata", async () => {
